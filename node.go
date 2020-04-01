@@ -25,6 +25,15 @@ func (n *Node) AddNode(node *Node) *Node {
 	return n
 }
 
+func (n *Node) AddNodes(nodes ...*Node) *Node {
+	n.Nodes = append(n.Nodes, nodes...)
+	return n
+}
+
+func (n *Node) AddNewNode(name string, createParams ...interface{}) *Node {
+	return n.AddNode(NewNode(name, createParams))
+}
+
 func (n *Node) AddProperty(property interface{}) *Node {
 	n.Properties = append(n.Properties, property)
 	return n
@@ -52,6 +61,27 @@ func (n *Node) GetNodes(name string) []*Node {
 		}
 	}
 	return nodes
+}
+
+func (n *Node) GetOrAddNode(node *Node) *Node {
+	result := n.GetNode(node.Name)
+	if result == nil {
+		n.AddNode(node)
+		return node
+	} else {
+		return result
+	}
+}
+
+func (n *Node) GetOrAddNewNode(name string, createParams ...interface{}) *Node {
+	result := n.GetNode(name)
+	if result == nil {
+		node := NewNode(name, createParams)
+		n.AddNode(node)
+		return node
+	} else {
+		return result
+	}
 }
 
 func (n *Node) sprint(sb *strings.Builder, depth int) {

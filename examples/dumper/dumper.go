@@ -7,19 +7,36 @@ import (
 	"github.com/mogaika/fbx"
 )
 
+func loadFbx(filename string) *fbx.FBX {
+	file, err := os.Open(filename)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	fbxData, err := fbx.Read(file)
+	if err != nil {
+		panic(err)
+	}
+	return fbxData
+}
+
+func saveFbx(filename string, f *fbx.FBX) {
+	file, err := os.Create(filename)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	fbx.Write(file, f)
+}
+
 func main() {
 	flag.Parse()
 
-	f, err := os.Open(flag.Arg(0))
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
+	f := loadFbx(flag.Arg(0))
 
-	fbxData, err := fbx.Read(f)
-	if err != nil {
-		panic(err)
-	}
+	print(f.SPrint())
 
-	print(fbxData.SPrint())
+	saveFbx(flag.Arg(0)+".new.fbx", f)
 }
