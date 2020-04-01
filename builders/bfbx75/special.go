@@ -1,4 +1,4 @@
-package fbx75
+package bfbx75
 
 import (
 	"github.com/mogaika/fbx"
