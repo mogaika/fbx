@@ -12,6 +12,10 @@ import (
 	"github.com/pkg/errors"
 )
 
+type writer struct {
+	w *binrw.Writer
+}
+
 func writeNode(w *binrw.Writer, n *Node) error {
 	posForRawEnd := w.Offset()
 	w.Skip(4 + 4 + 4)
@@ -150,5 +154,22 @@ func Write(sourceW io.WriteSeeker, f *FBX) error {
 	w.WriteU16(0x1a)
 	w.WriteU32(uint32(f.Version))
 
-	return writeNodes(w, f.Root.Nodes)
+	if err := w.Error(); err != nil {
+		return errors.Wrapf(err, "Header writing error")
+	}
+
+	if err := writeNodes(w, f.Root.Nodes); err != nil {
+		return errors.Wrapf(err, "Nodes writing error")
+	}
+
+	if footer, err := generateFooter(f); err != nil {
+		w.Write(RAW_FOOTER_SOURCE)
+	} else {
+		w.Write(footer)
+	}
+	w.Write(make([]byte, RAW_NULL_FOOTER_1_SIZE))
+	w.WriteU32(uint32(f.Version))
+	w.Write(make([]byte, RAW_NULL_FOOTER_2_SIZE))
+
+	return w.Error()
 }

@@ -1,12 +1,15 @@
-package bfbx75
+package bfbx73
 
 import (
 	"github.com/mogaika/fbx"
 )
 
 func Author(author string) *fbx.Node                  { return fbx.NewNode("Author", author) }
+func Colors(colors []float64) *fbx.Node               { return fbx.NewNode("Colors", colors) }
 func Comment(comment string) *fbx.Node                { return fbx.NewNode("Comment", comment) }
 func Connections() *fbx.Node                          { return fbx.NewNode("Connections") }
+func Content(data []byte) *fbx.Node                   { return fbx.NewNode("Content", data) }
+func Count(count int32) *fbx.Node                     { return fbx.NewNode("Count", count) }
 func CreationTime(time string) *fbx.Node              { return fbx.NewNode("CreationTime", time) }
 func CreationTimeStamp() *fbx.Node                    { return fbx.NewNode("CreationTimeStamp") }
 func Creator(creator string) *fbx.Node                { return fbx.NewNode("Creator", creator) }
@@ -16,6 +19,7 @@ func Current(a1 string) *fbx.Node                     { return fbx.NewNode("Curr
 func Day(day int32) *fbx.Node                         { return fbx.NewNode("Day", day) }
 func Definitions() *fbx.Node                          { return fbx.NewNode("Definitions") }
 func Deformer(id int64, a2, a3 string) *fbx.Node      { return fbx.NewNode("Deformer", id, a2, a3) }
+func Document(id int64, a2, a3 string) *fbx.Node      { return fbx.NewNode("Documents", id, a2, a3) }
 func Documents() *fbx.Node                            { return fbx.NewNode("Documents") }
 func EncryptionType(t int32) *fbx.Node                { return fbx.NewNode("EncryptionType", t) }
 func FBXHeaderExtension() *fbx.Node                   { return fbx.NewNode("FBXHeaderExtension") }
@@ -32,9 +36,11 @@ func Layer(a1 int32) *fbx.Node                        { return fbx.NewNode("Laye
 func LayerElement() *fbx.Node                         { return fbx.NewNode("LayerElement") }
 func LayerElementMaterial(a1 int32) *fbx.Node         { return fbx.NewNode("LayerElementMaterial", a1) }
 func LayerElementNormal(a1 int32) *fbx.Node           { return fbx.NewNode("LayerElementNormal", a1) }
+func LayerElementShared(a1 int32) *fbx.Node           { return fbx.NewNode("LayerElementShared", a1) }
 func LayerElementUV(a1 int32) *fbx.Node               { return fbx.NewNode("LayerElementUV", a1) }
 func Link_DeformAcuracy(a1 float64) *fbx.Node         { return fbx.NewNode("Link_DeformAcuracy", a1) }
 func MappingInformationType(t string) *fbx.Node       { return fbx.NewNode("MappingInformationType", t) }
+func Material(id int64, a2, a3 string) *fbx.Node      { return fbx.NewNode("Material", id, a2, a3) }
 func Materials(a1 []int32) *fbx.Node                  { return fbx.NewNode("Materials", a1) }
 func Media(a1 string) *fbx.Node                       { return fbx.NewNode("Media", a1) }
 func MetaData() *fbx.Node                             { return fbx.NewNode("MetaData") }
@@ -48,6 +54,7 @@ func MultiLayer(a1 int32) *fbx.Node                   { return fbx.NewNode("Mult
 func Name(name string) *fbx.Node                      { return fbx.NewNode("Name", name) }
 func NodeAttribute(id int64, a2, a3 string) *fbx.Node { return fbx.NewNode("NodeAttribute", id, a2, a3) }
 func Normals(normals []float64) *fbx.Node             { return fbx.NewNode("Normals", normals) }
+func Objects() *fbx.Node                              { return fbx.NewNode("Objects") }
 func ObjectType(object string) *fbx.Node              { return fbx.NewNode("ObjectType", object) }
 func PolygonVertexIndex(indexes []int32) *fbx.Node    { return fbx.NewNode("PolygonVertexIndex", indexes) }
 func Properties70() *fbx.Node                         { return fbx.NewNode("Properties70") }
@@ -56,6 +63,7 @@ func ReferenceInformationType(t string) *fbx.Node     { return fbx.NewNode("Refe
 func References() *fbx.Node                           { return fbx.NewNode("References") }
 func RelativeFilename(filename string) *fbx.Node      { return fbx.NewNode("RelativeFilename", filename) }
 func Revision(revision string) *fbx.Node              { return fbx.NewNode("Revision", revision) }
+func RootNode(id int64) *fbx.Node                     { return fbx.NewNode("RootNode", id) }
 func SceneInfo(a1 string, a2 string) *fbx.Node        { return fbx.NewNode("SceneInfo", a1, a2) }
 func Second(second int32) *fbx.Node                   { return fbx.NewNode("Second", second) }
 func Shading(shading bool) *fbx.Node                  { return fbx.NewNode("Shading", shading) }

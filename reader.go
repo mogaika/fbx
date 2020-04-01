@@ -161,7 +161,7 @@ func Read(sourceR io.ReadSeeker) (*FBX, error) {
 		return nil, errors.Errorf("Invalid header magic: %s", hex.EncodeToString(magic))
 	}
 
-	r.Skip(2) // unknown
+	r.Skip(2) // unknown, usually 0x1a
 
 	f := &FBX{
 		Version: int(r.ReadU32()),
