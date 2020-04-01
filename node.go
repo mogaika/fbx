@@ -12,19 +12,46 @@ type Node struct {
 	Properties []interface{}
 }
 
+func NewNode(name string, properties ...interface{}) *Node {
+	return &Node{
+		Name:       name,
+		Properties: properties,
+		Nodes:      make([]*Node, 0),
+	}
+}
+
 func (n *Node) AddNode(node *Node) *Node {
 	n.Nodes = append(n.Nodes, node)
 	return n
 }
 
-func (n *Node) AddProperty(prop interface{}) *Node {
-	n.Properties = append(n.Properties, prop)
+func (n *Node) AddProperty(property interface{}) *Node {
+	n.Properties = append(n.Properties, property)
 	return n
 }
 
-func (n *Node) AddProperties(props ...interface{}) *Node {
-	n.Properties = append(n.Properties, props...)
+func (n *Node) AddProperties(properties ...interface{}) *Node {
+	n.Properties = append(n.Properties, properties...)
 	return n
+}
+
+func (n *Node) GetNode(name string) *Node {
+	for _, node := range n.Nodes {
+		if node.Name == name {
+			return node
+		}
+	}
+	return nil
+}
+
+func (n *Node) GetNodes(name string) []*Node {
+	nodes := make([]*Node, 0)
+	for _, node := range n.Nodes {
+		if node.Name == name {
+			nodes = append(nodes, node)
+		}
+	}
+	return nodes
 }
 
 func (n *Node) sprint(sb *strings.Builder, depth int) {

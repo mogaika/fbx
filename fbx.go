@@ -6,12 +6,19 @@ import (
 
 type FBX struct {
 	Version int
-	Root    *Node
+	Root    Node
+}
+
+func NewFBX(version int) *FBX {
+	return &FBX{
+		Version: version,
+		Root:    *NewNode(""),
+	}
 }
 
 const RAW_MAGIC_SIZE = 0x15
 const RAW_HEADER_SIZE = 0x19
-const RAW_NULL_ENTRY_SIZE = 0xb
+const RAW_NULL_ENTRY_SIZE = 0xd
 
 // "Kaydara FBX Binary  \x00"
 var RAW_MAGIC []byte = []byte{
