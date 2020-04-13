@@ -19,7 +19,7 @@ func Current(a1 string) *fbx.Node                     { return fbx.NewNode("Curr
 func Day(day int32) *fbx.Node                         { return fbx.NewNode("Day", day) }
 func Definitions() *fbx.Node                          { return fbx.NewNode("Definitions") }
 func Deformer(id int64, a2, a3 string) *fbx.Node      { return fbx.NewNode("Deformer", id, a2, a3) }
-func Document(id int64, a2, a3 string) *fbx.Node      { return fbx.NewNode("Documents", id, a2, a3) }
+func Document(id int64, a2, a3 string) *fbx.Node      { return fbx.NewNode("Document", id, a2, a3) }
 func Documents() *fbx.Node                            { return fbx.NewNode("Documents") }
 func EncryptionType(t int32) *fbx.Node                { return fbx.NewNode("EncryptionType", t) }
 func FBXHeaderExtension() *fbx.Node                   { return fbx.NewNode("FBXHeaderExtension") }
@@ -36,7 +36,7 @@ func Layer(a1 int32) *fbx.Node                        { return fbx.NewNode("Laye
 func LayerElement() *fbx.Node                         { return fbx.NewNode("LayerElement") }
 func LayerElementMaterial(a1 int32) *fbx.Node         { return fbx.NewNode("LayerElementMaterial", a1) }
 func LayerElementNormal(a1 int32) *fbx.Node           { return fbx.NewNode("LayerElementNormal", a1) }
-func LayerElementShared(a1 int32) *fbx.Node           { return fbx.NewNode("LayerElementShared", a1) }
+func LayerElementColor(a1 int32) *fbx.Node            { return fbx.NewNode("LayerElementColor", a1) }
 func LayerElementUV(a1 int32) *fbx.Node               { return fbx.NewNode("LayerElementUV", a1) }
 func Link_DeformAcuracy(a1 float64) *fbx.Node         { return fbx.NewNode("Link_DeformAcuracy", a1) }
 func MappingInformationType(t string) *fbx.Node       { return fbx.NewNode("MappingInformationType", t) }
@@ -51,6 +51,7 @@ func ModelUVScaling(a1, a2 float64) *fbx.Node         { return fbx.NewNode("Mode
 func ModelUVTranslation(a1, a2 float64) *fbx.Node     { return fbx.NewNode("ModelUVTranslation", a1, a2) }
 func Month(month int32) *fbx.Node                     { return fbx.NewNode("Month", month) }
 func MultiLayer(a1 int32) *fbx.Node                   { return fbx.NewNode("MultiLayer", a1) }
+func MultiTake(a1 int32) *fbx.Node                    { return fbx.NewNode("MultiTake", a1) }
 func Name(name string) *fbx.Node                      { return fbx.NewNode("Name", name) }
 func NodeAttribute(id int64, a2, a3 string) *fbx.Node { return fbx.NewNode("NodeAttribute", id, a2, a3) }
 func Normals(normals []float64) *fbx.Node             { return fbx.NewNode("Normals", normals) }

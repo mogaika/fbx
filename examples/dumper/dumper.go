@@ -2,6 +2,8 @@ package main
 
 import (
 	"flag"
+	"io/ioutil"
+	"log"
 	"os"
 
 	"github.com/mogaika/fbx"
@@ -34,9 +36,15 @@ func saveFbx(filename string, f *fbx.FBX) {
 func main() {
 	flag.Parse()
 
-	f := loadFbx(flag.Arg(0))
+	for _, filename := range flag.Args() {
+		log.Printf("Loading file %v", filename)
+		f := loadFbx(filename)
 
-	print(f.SPrint())
+		f.PrintConnectionsTree(0)
 
-	saveFbx(flag.Arg(0)+".new.fbx", f)
+		log.Printf("Creating dump for %v", filename)
+		ioutil.WriteFile(filename+".txt", []byte(f.SPrint()), 666)
+
+		saveFbx(filename+".new.fbx", f)
+	}
 }

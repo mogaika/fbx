@@ -2,6 +2,7 @@ package fbx
 
 import (
 	"fmt"
+	"log"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -29,8 +30,6 @@ func (f *FBX) SPrint() string {
 const RAW_MAGIC_SIZE = 0x15
 const RAW_HEADER_SIZE = 0x19
 const RAW_NULL_ENTRY_SIZE = 0xd
-const RAW_NULL_FOOTER_1_SIZE = 7
-const RAW_NULL_FOOTER_2_SIZE = 0x88
 
 // "Kaydara FBX Binary  \x00"
 var RAW_MAGIC []byte = []byte{
@@ -48,6 +47,11 @@ var RAW_FOOTER_SOURCE []byte = []byte{
 var RAW_FOOTER_KEY []byte = []byte{
 	0xE2, 0x4F, 0x7B, 0x5F, 0xCD, 0xE4, 0xC8, 0x6D,
 	0xDB, 0xD8, 0xFB, 0xD7, 0x40, 0x58, 0xC6, 0x78,
+}
+
+var RAW_NULL_FOOTER_MAGIC []byte = []byte{
+	0xf8, 0x5a, 0x8c, 0x6a, 0xde, 0xf5, 0xd9, 0x7e,
+	0xec, 0xe9, 0xc, 0xe3, 0x75, 0x8f, 0x29, 0xb,
 }
 
 func generateFooter(f *FBX) ([]byte, error) {
@@ -94,4 +98,62 @@ func generateFooter(f *FBX) ([]byte, error) {
 	encode(buf, RAW_FOOTER_KEY)
 	encode(buf, timeEncoded)
 	return buf, nil
+}
+
+func (f *FBX) PrintConnectionsTree(id int64) { f.printConnectionsTree(id, 0) }
+func (f *FBX) printConnectionsTree(id int64, tab int) {
+	connections := f.Root.GetNode("Connections")
+	objects := f.Root.GetNode("Objects")
+
+	if tab > 30 {
+		panic(tab)
+	}
+	sTab := func(i int) string {
+		s := ""
+		for j := 0; j < i; j++ {
+			s += "|  "
+		}
+		return s
+	}
+	for _, conn := range connections.Nodes {
+		if conn.Properties[2].(int64) != id {
+			continue
+		}
+		childId := conn.Properties[1].(int64)
+		for _, object := range objects.Nodes {
+			if object.Properties[0].(int64) == childId {
+				log.Printf("%s %v %q %q",
+					sTab(tab), childId, object.Properties[1], object.Properties[2])
+				f.printConnectionsTree(childId, tab+1)
+			}
+		}
+	}
+}
+
+func (f *FBX) PrintConnectionsList(id int64) { f.printConnectionsList(id, 0) }
+func (f *FBX) printConnectionsList(id int64, tab int) {
+	connections := f.Root.GetNode("Connections")
+	objects := f.Root.GetNode("Objects")
+
+	getObject := func(id int64) *Node {
+		for _, object := range objects.Nodes {
+			if object.Properties[0].(int64) == id {
+				return object
+			}
+		}
+		return nil
+	}
+	for _, object := range connections.Nodes {
+		child := getObject(object.Properties[1].(int64))
+		parent := getObject(object.Properties[2].(int64))
+		if parent != nil {
+			log.Printf("%s c %09d p %09d  c %q %q   p %q %q",
+				object.Properties[0].(string), object.Properties[1].(int64), object.Properties[2].(int64),
+				child.Properties[1], child.Properties[2], parent.Properties[1], parent.Properties[2])
+		} else {
+			log.Printf("%s c %09d p %09d  c %q %q | root ",
+				object.Properties[0].(string), object.Properties[1].(int64), object.Properties[2].(int64),
+				child.Properties[1], child.Properties[2])
+		}
+	}
 }

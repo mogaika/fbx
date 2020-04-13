@@ -167,9 +167,16 @@ func Write(sourceW io.WriteSeeker, f *FBX) error {
 	} else {
 		w.Write(footer)
 	}
-	w.Write(make([]byte, RAW_NULL_FOOTER_1_SIZE))
+	w.Skip(4)
+
+	// pad to 0x10 byte, or add 0x10 if padded
+	padStart := w.Offset()
+	w.Skip(((padStart/0x10)+1)*0x10 - padStart)
+
 	w.WriteU32(uint32(f.Version))
-	w.Write(make([]byte, RAW_NULL_FOOTER_2_SIZE))
+
+	w.Skip(120)
+	w.Write(RAW_NULL_FOOTER_MAGIC)
 
 	return w.Error()
 }

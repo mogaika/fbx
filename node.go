@@ -64,8 +64,7 @@ func (n *Node) GetNodes(name string) []*Node {
 }
 
 func (n *Node) GetOrAddNode(node *Node) *Node {
-	result := n.GetNode(node.Name)
-	if result == nil {
+	if result := n.GetNode(node.Name); result == nil {
 		n.AddNode(node)
 		return node
 	} else {
