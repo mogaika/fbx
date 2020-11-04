@@ -40,11 +40,20 @@ func main() {
 		log.Printf("Loading file %v", filename)
 		f := loadFbx(filename)
 
+		f.PrintConnectionsList(0)
 		f.PrintConnectionsTree(0)
 
 		log.Printf("Creating dump for %v", filename)
 		ioutil.WriteFile(filename+".txt", []byte(f.SPrint()), 666)
 
 		saveFbx(filename+".new.fbx", f)
+
+		dot, err := os.Create(filename + ".dot")
+		if err != nil {
+			continue
+		}
+		defer dot.Close()
+
+		f.PrintConnectionsDotFile(dot, 0)
 	}
 }

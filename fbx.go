@@ -2,6 +2,7 @@ package fbx
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"strings"
 
@@ -156,4 +157,59 @@ func (f *FBX) printConnectionsList(id int64, tab int) {
 				child.Properties[1], child.Properties[2])
 		}
 	}
+}
+
+func (f *FBX) PrintConnectionsDotFile(w io.Writer, id int64) {
+	connections := f.Root.GetNode("Connections")
+	objects := f.Root.GetNode("Objects")
+
+	createdObjects := make(map[int64]struct{})
+
+	getObject := func(id int64) *Node {
+		for _, object := range objects.Nodes {
+			if object.Properties[0].(int64) == id {
+				return object
+			}
+		}
+		return nil
+	}
+
+	createIfNotExists := func(id int64) {
+		if _, ex := createdObjects[id]; ex {
+			return
+		}
+		createdObjects[id] = struct{}{}
+
+		object := getObject(id)
+		if object == nil {
+			fmt.Fprintf(w, "%d [label=\"Scene Root %d\", shape=house];\n", id, id)
+		} else {
+			label := fmt.Sprintf("%s\n%v\nid:%d",
+				object.Properties[2],
+				strings.Split(object.Properties[1].(string), "\x00\x01"),
+				object.Properties[0])
+
+			fmt.Fprintf(w, "%d [label=%q, shape=box];\n", object.Properties[0], label)
+		}
+	}
+
+	fmt.Fprintf(w, "digraph fbx {\n")
+
+	for _, connection := range connections.Nodes {
+		childId := connection.Properties[1].(int64)
+		parentId := connection.Properties[2].(int64)
+
+		createIfNotExists(childId)
+		createIfNotExists(parentId)
+
+		label := fmt.Sprint(connection.Properties[0])
+
+		if len(connection.Properties) >= 4 {
+			label += "::" + fmt.Sprint(connection.Properties[3])
+		}
+
+		fmt.Fprintf(w, "%d -> %d [label=%q];\n", childId, parentId, label)
+	}
+
+	fmt.Fprintf(w, "}\n")
 }

@@ -42,6 +42,7 @@ func Link_DeformAcuracy(a1 float64) *fbx.Node         { return fbx.NewNode("Link
 func MappingInformationType(t string) *fbx.Node       { return fbx.NewNode("MappingInformationType", t) }
 func Material(id int64, a2, a3 string) *fbx.Node      { return fbx.NewNode("Material", id, a2, a3) }
 func Materials(a1 []int32) *fbx.Node                  { return fbx.NewNode("Materials", a1) }
+func Matrix(matrix []float64) *fbx.Node               { return fbx.NewNode("Matrix", matrix) }
 func Media(a1 string) *fbx.Node                       { return fbx.NewNode("Media", a1) }
 func MetaData() *fbx.Node                             { return fbx.NewNode("MetaData") }
 func Millisecond(millisecond int32) *fbx.Node         { return fbx.NewNode("Millisecond", millisecond) }
@@ -53,11 +54,16 @@ func Month(month int32) *fbx.Node                     { return fbx.NewNode("Mont
 func MultiLayer(a1 int32) *fbx.Node                   { return fbx.NewNode("MultiLayer", a1) }
 func MultiTake(a1 int32) *fbx.Node                    { return fbx.NewNode("MultiTake", a1) }
 func Name(name string) *fbx.Node                      { return fbx.NewNode("Name", name) }
+func NbPoseNodes(count int32) *fbx.Node               { return fbx.NewNode("NbPoseNodes", count) }
+func Node(id int64) *fbx.Node                         { return fbx.NewNode("Node", id) }
 func NodeAttribute(id int64, a2, a3 string) *fbx.Node { return fbx.NewNode("NodeAttribute", id, a2, a3) }
 func Normals(normals []float64) *fbx.Node             { return fbx.NewNode("Normals", normals) }
+func Indexes(indexes []int32) *fbx.Node               { return fbx.NewNode("Indexes", indexes) }
 func Objects() *fbx.Node                              { return fbx.NewNode("Objects") }
 func ObjectType(object string) *fbx.Node              { return fbx.NewNode("ObjectType", object) }
 func PolygonVertexIndex(indexes []int32) *fbx.Node    { return fbx.NewNode("PolygonVertexIndex", indexes) }
+func Pose(id int64, a2, a3 string) *fbx.Node          { return fbx.NewNode("Pose", id, a2, a3) }
+func PoseNode() *fbx.Node                             { return fbx.NewNode("PoseNode") }
 func Properties70() *fbx.Node                         { return fbx.NewNode("Properties70") }
 func PropertyTemplate(a1 string) *fbx.Node            { return fbx.NewNode("PropertyTemplate", a1) }
 func ReferenceInformationType(t string) *fbx.Node     { return fbx.NewNode("ReferenceInformationType", t) }
@@ -76,8 +82,8 @@ func Texture(id int64, a2, a3 string) *fbx.Node       { return fbx.NewNode("Text
 func Texture_Alpha_Source(a1 string) *fbx.Node        { return fbx.NewNode("Texture_Alpha_Source", a1) }
 func TextureName(name string) *fbx.Node               { return fbx.NewNode("TextureName", name) }
 func Title(title string) *fbx.Node                    { return fbx.NewNode("Title", title) }
-func Transform(weights []float64) *fbx.Node           { return fbx.NewNode("Transform", weights) }
-func TransformLink(weights []float64) *fbx.Node       { return fbx.NewNode("TransformLink", weights) }
+func Transform(matrix []float64) *fbx.Node            { return fbx.NewNode("Transform", matrix) }
+func TransformLink(matrix []float64) *fbx.Node        { return fbx.NewNode("TransformLink", matrix) }
 func Type(a1 string) *fbx.Node                        { return fbx.NewNode("Type", a1) }
 func TypedIndex(index int32) *fbx.Node                { return fbx.NewNode("TypedIndex", index) }
 func TypeFlags(t string) *fbx.Node                    { return fbx.NewNode("TypeFlags", t) }

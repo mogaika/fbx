@@ -37,6 +37,10 @@ func writeNode(w *binrw.Writer, n *Node) error {
 		}
 	}
 
+	if len(n.Properties) == 0 && len(n.Nodes) == 0 {
+		w.Write(RAW_NULL_ENTRY)
+	}
+
 	endOffset := w.Offset()
 
 	w.Seek(posForRawEnd, os.SEEK_SET)
@@ -91,17 +95,17 @@ func writePropertyData(w *binrw.Writer, dt DataType, v interface{}) error {
 
 		var compressedBuffer bytes.Buffer
 
-		if len(data) >= 1024 {
-			compressedWriter := zlib.NewWriter(&compressedBuffer)
+		//if len(data) >= 1024 {
+		compressedWriter := zlib.NewWriter(&compressedBuffer)
 
-			if _, err := compressedWriter.Write(data); err != nil {
-				return errors.Wrapf(err, "Unable to pack zlib")
-			}
-
-			if err := compressedWriter.Close(); err != nil {
-				return errors.Wrapf(err, "Unable to close zlib")
-			}
+		if _, err := compressedWriter.Write(data); err != nil {
+			return errors.Wrapf(err, "Unable to pack zlib")
 		}
+
+		if err := compressedWriter.Close(); err != nil {
+			return errors.Wrapf(err, "Unable to close zlib")
+		}
+		//}
 
 		w.WriteU32(uint32(arrayLength))
 		if compressedBuffer.Len() != 0 && compressedBuffer.Len() < len(data) {
@@ -167,11 +171,12 @@ func Write(sourceW io.WriteSeeker, f *FBX) error {
 	} else {
 		w.Write(footer)
 	}
-	w.Skip(4)
 
 	// pad to 0x10 byte, or add 0x10 if padded
 	padStart := w.Offset()
 	w.Skip(((padStart/0x10)+1)*0x10 - padStart)
+
+	w.Skip(4)
 
 	w.WriteU32(uint32(f.Version))
 
